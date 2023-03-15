@@ -7,7 +7,7 @@ import (
 
 type GetRestaurantStore interface {
 	FindByID(ctx context.Context, id int) (*restaurantModel.Restaurant, error)
-	FindByCondition(ctx context.Context, cond map[string]interface{}) ([]*restaurantModel.Restaurant, error)
+	FindOneByCondition(ctx context.Context, cond map[string]interface{}) (*restaurantModel.Restaurant, error)
 }
 
 type getRestaurantBiz struct {
@@ -26,8 +26,8 @@ func (r *getRestaurantBiz) FindByID(ctx context.Context, id int) (*restaurantMod
 	return data, nil
 }
 
-func (r *getRestaurantBiz) FindByCondition(ctx context.Context, cond map[string]interface{}) ([]*restaurantModel.Restaurant, error) {
-	data, err := r.store.FindByCondition(ctx, cond)
+func (r *getRestaurantBiz) FindByCondition(ctx context.Context, cond map[string]interface{}) (*restaurantModel.Restaurant, error) {
+	data, err := r.store.FindOneByCondition(ctx, cond)
 	if err != nil {
 		return nil, err
 	}

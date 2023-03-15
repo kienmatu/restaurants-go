@@ -11,6 +11,7 @@ type Restaurant struct {
 	OwnerID         int    `json:"ownerId" gorm:"column:owner_id"`
 	Name            string `json:"name" gorm:"column:name"`
 	Addr            string `json:"addr" gorm:"column:addr"`
+	Status          string `json:"status" gorm:"column:status"`
 }
 
 func (r Restaurant) TableName() string {
@@ -18,14 +19,16 @@ func (r Restaurant) TableName() string {
 }
 
 type RestaurantCreate struct {
-	ID   int    `json:"id" gorm:"column:id"`
-	Name string `json:"name" gorm:"column:name"`
-	Addr string `json:"addr" gorm:"column:addr"`
-	//OwnerID int    `json:"ownerId" gorm:"column:owner_id"`
+	ID      int    `json:"id" gorm:"column:id"`
+	Name    string `json:"name" gorm:"column:name"`
+	Addr    string `json:"addr" gorm:"column:addr"`
+	OwnerID int    `json:"ownerId" gorm:"column:owner_id"`
 }
 type RestaurantUpdate struct {
-	Name string `json:"name" gorm:"column:name"`
-	Addr string `json:"addr" gorm:"column:addr"`
+	ID     int    `json:"id" gorm:"column:id"`
+	Name   string `json:"name" gorm:"column:name"`
+	Addr   string `json:"addr" gorm:"column:addr"`
+	Status string `json:"status" gorm:"column:status"`
 }
 
 func (r RestaurantCreate) TableName() string {

@@ -14,7 +14,7 @@ type Configuration struct {
 	TokenTTL              int64  `env:"TOKEN_TTL,required"`
 	JwtSecret             string `env:"JWT_SECRET,required"`
 	DatabaseConnectionURL string `env:"CONNECTION_URL,required"`
-	ENV                   string `env:"ENV"`
+	ENV                   string `env:"ENV" envDefault:"DEV"`
 }
 
 // NewConfig will read the config data from given .env file

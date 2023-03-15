@@ -12,7 +12,7 @@ type Paging struct {
 	NextCursor string `json:"nextCursor"`
 }
 
-func (p *Paging) Fullfil() {
+func (p *Paging) Fulfill() {
 	if p.Page <= 0 {
 		p.Page = 1
 	}

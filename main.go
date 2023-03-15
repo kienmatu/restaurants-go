@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/kienmatu/restaurants-go/component/app-context"
-	"github.com/kienmatu/restaurants-go/module/restaurant/transport"
+	ginRestaurant "github.com/kienmatu/restaurants-go/module/restaurant/transport/gin_restaurant"
 	"github.com/kienmatu/restaurants-go/utils"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -17,6 +17,13 @@ func main() {
 	if err != nil {
 		panic("failed to connect database")
 	}
+	//if cfg.ENV == "DEV" {
+	//	err := db.AutoMigrate(&restaurantModel.Restaurant{})
+	//	if err != nil {
+	//		panic("can not migrate db")
+	//	}
+	//}
+	db.Debug()
 	appCtx := appContext.NewAppContext(db, cfg)
 
 	r := gin.Default()
@@ -24,5 +31,11 @@ func main() {
 
 	restaurantApi := v1.Group("/restaurants")
 
-	restaurantApi.GET("", transport.GetRestaurant(appCtx))
+	restaurantApi.GET("", ginRestaurant.ListRestaurant(appCtx))
+	restaurantApi.POST("", ginRestaurant.CreateRestaurant(appCtx))
+	restaurantApi.PATCH("/:id", ginRestaurant.UpdateRestaurant(appCtx))
+	restaurantApi.GET("/:id", ginRestaurant.GetRestaurant(appCtx))
+	restaurantApi.DELETE("/:id", ginRestaurant.DeleteRestaurant(appCtx))
+
+	r.Run("localhost:" + cfg.Port)
 }
