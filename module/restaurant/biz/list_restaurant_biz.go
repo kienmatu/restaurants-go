@@ -22,7 +22,7 @@ func NewListRestaurantBiz(store ListRestaurantStore) *listRestaurantBiz {
 func (r *listRestaurantBiz) ListByCondition(ctx context.Context, filter *restaurantModel.Filter, paging *common.Paging) ([]*restaurantModel.Restaurant, error) {
 	data, err := r.store.ListByCondition(ctx, filter, paging)
 	if err != nil {
-		return nil, err
+		return nil, common.ErrCannotListEntity(restaurantModel.EntityName, err)
 	}
 	return data, nil
 }

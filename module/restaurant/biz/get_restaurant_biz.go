@@ -2,6 +2,7 @@ package restaurantBiz
 
 import (
 	"context"
+	"github.com/kienmatu/restaurants-go/common"
 	restaurantModel "github.com/kienmatu/restaurants-go/module/restaurant/model"
 )
 
@@ -29,7 +30,7 @@ func (r *getRestaurantBiz) FindByID(ctx context.Context, id int) (*restaurantMod
 func (r *getRestaurantBiz) FindByCondition(ctx context.Context, cond map[string]interface{}) (*restaurantModel.Restaurant, error) {
 	data, err := r.store.FindOneByCondition(ctx, cond)
 	if err != nil {
-		return nil, err
+		return nil, common.ErrCannotListEntity(restaurantModel.EntityName, err)
 	}
 	return data, nil
 }

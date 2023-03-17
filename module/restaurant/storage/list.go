@@ -28,7 +28,7 @@ func (s *sqlStore) ListByCondition(
 		Limit(paging.Limit).
 		Order("id desc").
 		Find(&restaurants).Error; err != nil {
-		return nil, err
+		return nil, common.ErrDB(err)
 	}
 	return restaurants, nil
 }

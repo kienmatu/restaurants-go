@@ -2,6 +2,8 @@ package restaurantBiz
 
 import (
 	"context"
+	"github.com/kienmatu/restaurants-go/common"
+	restaurantModel "github.com/kienmatu/restaurants-go/module/restaurant/model"
 )
 
 type DeleteRestaurantStore interface {
@@ -18,7 +20,7 @@ func NewDeleteRestaurantBiz(store DeleteRestaurantStore) *deleteRestaurantBiz {
 
 func (r *deleteRestaurantBiz) DeleteRestaurant(ctx context.Context, id int) error {
 	if err := r.store.Delete(ctx, id); err != nil {
-		return err
+		return common.ErrCannotDeleteEntity(restaurantModel.EntityName, err)
 	}
 	return nil
 }

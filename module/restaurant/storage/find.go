@@ -2,8 +2,7 @@ package restaurantStorage
 
 import (
 	"context"
-	"errors"
-	"fmt"
+	"github.com/kienmatu/restaurants-go/common"
 	restaurantModel "github.com/kienmatu/restaurants-go/module/restaurant/model"
 )
 
@@ -12,7 +11,7 @@ func (s *sqlStore) FindOneByCondition(ctx context.Context, cond map[string]inter
 	if err := s.db.Table(restaurantModel.Restaurant{}.TableName()).
 		Where(cond).
 		First(&data).Error; err != nil {
-		return nil, errors.New("can not find restaurant")
+		return nil, common.ErrDB(err)
 	}
 	return &data, nil
 }
@@ -21,8 +20,7 @@ func (s *sqlStore) FindByID(ctx context.Context, id int) (*restaurantModel.Resta
 	var restaurant *restaurantModel.Restaurant
 	if err := s.db.Table(restaurantModel.Restaurant{}.TableName()).
 		First(&restaurant, "id = ?", id).Error; err != nil {
-		return nil, err
+		return nil, common.ErrDB(err)
 	}
-	fmt.Println("nil?", restaurant == nil)
 	return restaurant, nil
 }

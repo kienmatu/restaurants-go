@@ -6,12 +6,19 @@ import (
 	"strings"
 )
 
+type RestaurantType string
+
+const Premium RestaurantType = "premium"
+const Normal RestaurantType = "normal"
+const EntityName = "Restaurant"
+
 type Restaurant struct {
 	common.SQLModel `json:",inline"`
-	OwnerID         int    `json:"ownerId" gorm:"column:owner_id"`
-	Name            string `json:"name" gorm:"column:name"`
-	Addr            string `json:"addr" gorm:"column:addr"`
-	Status          string `json:"status" gorm:"column:status"`
+	OwnerID         int            `json:"ownerId" gorm:"column:owner_id"`
+	Name            string         `json:"name" gorm:"column:name"`
+	Addr            string         `json:"addr" gorm:"column:addr"`
+	Status          string         `json:"status" gorm:"column:status"`
+	Type            RestaurantType `json:"type" gorm:"column:type"`
 }
 
 func (r Restaurant) TableName() string {

@@ -2,7 +2,7 @@ package restaurantBiz
 
 import (
 	"context"
-	"fmt"
+	"github.com/kienmatu/restaurants-go/common"
 	restaurantModel "github.com/kienmatu/restaurants-go/module/restaurant/model"
 )
 
@@ -20,8 +20,7 @@ func NewCreateRestaurantBiz(store CreateRestaurantStore) *createRestaurantBiz {
 
 func (r *createRestaurantBiz) CreateRestaurant(ctx context.Context, data *restaurantModel.RestaurantCreate) error {
 	if err := r.store.Create(ctx, data); err != nil {
-		fmt.Println(err)
-		return err
+		return common.ErrCannotCreateEntity(restaurantModel.EntityName, err)
 	}
 	return nil
 }
