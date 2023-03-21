@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/kienmatu/restaurants-go/component/app-context"
+	"github.com/kienmatu/restaurants-go/middleware"
 	ginRestaurant "github.com/kienmatu/restaurants-go/module/restaurant/transport/gin_restaurant"
 	"github.com/kienmatu/restaurants-go/utils"
 	"gorm.io/driver/mysql"
@@ -27,6 +28,8 @@ func main() {
 	appCtx := appContext.NewAppContext(db, cfg)
 
 	r := gin.Default()
+	r.Use(middleware.Recover(appCtx))
+
 	v1 := r.Group("/v1")
 
 	restaurantApi := v1.Group("/restaurants")

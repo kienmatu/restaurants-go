@@ -18,7 +18,7 @@ func GetRestaurant(appCtx appContext.AppContext) func(c *gin.Context) {
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{})
 		}
-
+		panic("eee")
 		db := appCtx.GetMainDBConnection()
 		store := restaurantStorage.NewSqlStore(db)
 		biz := restaurantBiz.NewGetRestaurantBiz(store)

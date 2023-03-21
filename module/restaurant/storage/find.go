@@ -16,6 +16,7 @@ func (s *sqlStore) FindOneByCondition(ctx context.Context, cond map[string]inter
 	return &data, nil
 }
 
+// using
 func (s *sqlStore) FindByID(ctx context.Context, id int) (*restaurantModel.Restaurant, error) {
 	var restaurant *restaurantModel.Restaurant
 	if err := s.db.Table(restaurantModel.Restaurant{}.TableName()).
