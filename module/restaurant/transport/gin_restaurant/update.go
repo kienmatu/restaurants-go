@@ -15,14 +15,11 @@ func UpdateRestaurant(appCtx appContext.AppContext) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{})
+			panic(common.ErrInvalidRequest(err))
 		}
 		var data restaurantModel.RestaurantUpdate
 		if err := c.ShouldBind(&data); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
-			return
+			panic(common.ErrInvalidRequest(err))
 		}
 		data.ID = id
 		db := appCtx.GetMainDBConnection()
@@ -30,10 +27,7 @@ func UpdateRestaurant(appCtx appContext.AppContext) func(c *gin.Context) {
 		biz := restaurantBiz.NewUpdateRestaurantBiz(store)
 
 		if err := biz.UpdateRestaurant(c.Request.Context(), &data); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"error": err.Error(),
-			})
-			return
+			panic(err)
 		}
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(true))
 	}

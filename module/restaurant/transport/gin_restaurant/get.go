@@ -2,7 +2,6 @@ package ginRestaurant
 
 import (
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 	"net/http"
 	"strconv"
 
@@ -16,27 +15,15 @@ func GetRestaurant(appCtx appContext.AppContext) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{})
+			panic(common.ErrInvalidRequest(err))
 		}
-		panic("eee")
 		db := appCtx.GetMainDBConnection()
 		store := restaurantStorage.NewSqlStore(db)
 		biz := restaurantBiz.NewGetRestaurantBiz(store)
-		res, err := biz.FindByID(c.Request.Context(), id)
+		res, err := biz.FindByCondition(c.Request.Context(), map[string]interface{}{"id": id})
 		if err != nil {
-
-			if err == gorm.ErrRecordNotFound {
-				c.JSON(http.StatusNotFound, gin.H{
-					"error": "not found",
-				})
-				return
-			}
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
-			return
+			panic(err)
 		}
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(res))
-		return
 	}
 }
