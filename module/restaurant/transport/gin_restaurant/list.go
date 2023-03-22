@@ -32,6 +32,9 @@ func ListRestaurant(appCtx appContext.AppContext) func(c *gin.Context) {
 		if err != nil {
 			panic(err)
 		}
+		for _, r := range data {
+			r.Mask(true)
+		}
 		c.JSON(http.StatusOK, common.SuccessResponse(data, &paging, &filter))
 	}
 }

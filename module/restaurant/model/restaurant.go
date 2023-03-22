@@ -24,6 +24,9 @@ type Restaurant struct {
 func (r Restaurant) TableName() string {
 	return "restaurants"
 }
+func (r *Restaurant) Mask(isAdminOrOwner bool) {
+	r.GenUID(common.DBTypeRestaurant)
+}
 
 type RestaurantCreate struct {
 	ID      int    `json:"id" gorm:"column:id"`

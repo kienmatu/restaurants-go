@@ -8,12 +8,11 @@ import (
 	restaurantModel "github.com/kienmatu/restaurants-go/module/restaurant/model"
 	restaurantStorage "github.com/kienmatu/restaurants-go/module/restaurant/storage"
 	"net/http"
-	"strconv"
 )
 
 func UpdateRestaurant(appCtx appContext.AppContext) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
+		uid, err := common.UIDFromBase58(c.Param("uid"))
 		if err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}
@@ -21,7 +20,7 @@ func UpdateRestaurant(appCtx appContext.AppContext) func(c *gin.Context) {
 		if err := c.ShouldBind(&data); err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}
-		data.ID = id
+		data.ID = int(uid.GetSequence())
 		db := appCtx.GetMainDBConnection()
 		store := restaurantStorage.NewSqlStore(db)
 		biz := restaurantBiz.NewUpdateRestaurantBiz(store)

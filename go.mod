@@ -10,6 +10,8 @@ require (
 	gorm.io/gorm v1.24.6
 )
 
+require github.com/btcsuite/btcutil v1.0.2 // indirect
+
 require (
 	github.com/bytedance/sonic v1.8.3 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect

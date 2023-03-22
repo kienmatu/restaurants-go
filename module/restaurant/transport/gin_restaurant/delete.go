@@ -2,18 +2,17 @@ package ginRestaurant
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
-	"strconv"
-
 	"github.com/kienmatu/restaurants-go/common"
 	appContext "github.com/kienmatu/restaurants-go/component/app-context"
 	restaurantBiz "github.com/kienmatu/restaurants-go/module/restaurant/biz"
 	restaurantStorage "github.com/kienmatu/restaurants-go/module/restaurant/storage"
+
+	"net/http"
 )
 
 func DeleteRestaurant(appCtx appContext.AppContext) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
+		uid, err := common.UIDFromBase58(c.Param("uid"))
 		if err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}
@@ -22,7 +21,7 @@ func DeleteRestaurant(appCtx appContext.AppContext) func(c *gin.Context) {
 		store := restaurantStorage.NewSqlStore(db)
 		biz := restaurantBiz.NewDeleteRestaurantBiz(store)
 
-		if err := biz.DeleteRestaurant(c.Request.Context(), id); err != nil {
+		if err := biz.DeleteRestaurant(c.Request.Context(), int(uid.GetSequence())); err != nil {
 			panic(err)
 		}
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(true))
